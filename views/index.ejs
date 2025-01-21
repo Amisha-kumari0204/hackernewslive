@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker News Scraper</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #000000;
+            padding: 10px 20px;
+            color: white;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .story {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .story:last-child {
+            border-bottom: none;
+        }
+
+        .story-title {
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        .story-title a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .story-title a:hover {
+            text-decoration: underline;
+        }
+
+        .story-time {
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Hacker News Live Stories</h1>
+    </header>
+    <main>
+        <div id="stories">
+            <p>Loading stories...</p>
+        </div>
+    </main>
+
+    <script>
+        const ws = new WebSocket('wss://hackernewslive.onrender.com');
+
+        const storiesDiv = document.getElementById('stories');
+
+
+        const formatTime = (timestamp) => {
+            const date = new Date(timestamp * 1000);
+            return date.toLocaleString();
+        };
+
+
+        const renderStories = (stories) => {
+            if (stories.length === 0) {
+                storiesDiv.innerHTML = '<p>No stories available.</p>';
+                return;
+            }
+
+            storiesDiv.innerHTML = stories
+                .map(
+                    (story) => `
+                    <div class="story">
+                        <p class="story-title">
+                            <a href="${story.url}" target="_blank">${story.title}</a>
+                        </p>
+                        <p class="story-time">Published: ${formatTime(story.time)}</p>
+                    </div>
+                `
+                )
+                .join('');
+        };
+
+ 
+        ws.onopen = () => {
+            console.log('Connected to WebSocket server');
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            renderStories(data.stories);
+            
+        };
+
+        ws.onclose = () => {
+            console.log('Disconnected from WebSocket server');
+            storiesDiv.innerHTML = '<p>Connection lost. Please refresh the page.</p>';
+        };
+    </script>
+</body>
+</html>
