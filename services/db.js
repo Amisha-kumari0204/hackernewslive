@@ -1,7 +1,7 @@
 const dbsetup={
-    host:'sql8.freesqldatabase.com',
-    user:'sql8758222',
-    password:'FFEDs5X7vG',
-    database:'sql8758222'
+    host:'sql12.freesqldatabase.com',
+    user:'sql12759352',
+    password:'DXVNNuNxVC',
+    database:'sql12759352'
  };
 module.exports=dbsetup;
