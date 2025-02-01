@@ -1,7 +1,7 @@
 const dbsetup={
     host:'sql12.freesqldatabase.com',
-    user:'sql12759352',
-    password:'DXVNNuNxVC',
-    database:'sql12759352'
+    user:'sql12760595',
+    password:'CYXCV1aTZu',
+    database:'sql12760595'
  };
 module.exports=dbsetup;
